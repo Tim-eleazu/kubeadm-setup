@@ -1,4 +1,5 @@
 variable "project-name" {}
+variable "region" {}
 variable "az-zone" {}
 variable "vpc_cidr_block" {}
 variable "subnet_cidr_block" {}
