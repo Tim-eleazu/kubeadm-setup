@@ -1,7 +1,7 @@
 # This guide provides all the commands required to set up a Kubernetes cluster using `kubeadm`. Copy and paste the following commands to complete the setup
 
 
-### On the Ubuntu Instance run
+### On the Master Node
 
 ```
 ip addr
