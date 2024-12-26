@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: kucc8
+  name: kucc8
+spec:
+  containers:
+  - image: nginx
+    name: nginx
+  - image: consul
+    name: consul

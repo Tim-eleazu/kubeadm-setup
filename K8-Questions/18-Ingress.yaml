@@ -1,0 +1,28 @@
+# Task
+# -
+
+# Create a new nginx Ingress resource as follows:
+
+# • Name: ping
+# • Namespace: ing-internal
+# • Exposing service hi on path /hi using service port 5678
+
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ping
+  namespace: ing-internal
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /hi
+        pathType: Prefix
+        backend:
+          service:
+            name: hi
+            port:
+              number: 5678
