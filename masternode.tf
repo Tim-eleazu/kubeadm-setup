@@ -44,6 +44,14 @@ resource "aws_instance" "Master-ap-project-01-server" {
     echo "net.ipv4.ip_forward = 1" | tee -a /etc/sysctl.conf
     sysctl -p
 
+    # Install cfssl and cfssljson ---for Security
+    wget -q --show-progress --https-only --timestamping \
+      https://storage.googleapis.com/kubernetes-the-hard-way/cfssl/1.4.1/linux/cfssl \
+      https://storage.googleapis.com/kubernetes-the-hard-way/cfssl/1.4.1/linux/cfssljson
+
+    chmod +x cfssl cfssljson
+    sudo mv cfssl cfssljson /usr/local/bin/
+
     # Initialize the Kubernetes Master Node
     MASTER_NODE_IP=$(hostname -I | awk '{print $1}')
     kubeadm init --apiserver-advertise-address=$MASTER_NODE_IP --pod-network-cidr=10.244.0.0/16 --upload-certs
@@ -68,6 +76,17 @@ resource "aws_instance" "Master-ap-project-01-server" {
     kubeadm token create --print-join-command > /tmp/kubeadm_join_command.sh
 
     echo "Calico CNI applied successfully."
+
+    # Kubeadm shortcut
+    echo "source <(kubectl completion bash)" >> /root/.bashrc
+    echo "alias k=kubectl" >> /root/.bashrc
+    echo "complete -o default -F __start_kubectl k" >> /root/.bashrc
+
+    if id "ubuntu" &>/dev/null; then
+        echo "source <(kubectl completion bash)" >> /home/ubuntu/.bashrc
+        echo "alias k=kubectl" >> /home/ubuntu/.bashrc
+        echo "complete -o default -F __start_kubectl k" >> /home/ubuntu/.bashrc
+    fi
   EOF
 
   tags = {

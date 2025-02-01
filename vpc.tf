@@ -23,6 +23,7 @@ resource "aws_subnet" "ap-project-01-subnet" {
   }
 }
 
+# Internet Gateway
 resource "aws_internet_gateway" "ap-project-01-gw" {
   vpc_id = aws_vpc.ap-project-01.id
 
@@ -76,7 +77,7 @@ resource "aws_security_group" "ap-project-01-sg" {
         from_port        = 2379
         to_port          = 2380
         protocol         = "tcp"
-        cidr_blocks      = ["0.0.0.0/0"] # Replace with your VPC CIDR block
+        cidr_blocks      = [var.cidr_blocks] # Replace with your VPC CIDR block
         ipv6_cidr_blocks = ["::/0"]
         self             = false
         prefix_list_ids  = []
@@ -98,6 +99,17 @@ resource "aws_security_group" "ap-project-01-sg" {
         from_port        = -1
         to_port          = -1
         protocol         = "icmp"
+        cidr_blocks      = [var.cidr_blocks] # Replace with your VPC CIDR block
+        ipv6_cidr_blocks = ["::/0"]
+        self             = false
+        prefix_list_ids  = []
+        security_groups  = []
+      },
+      {
+        description      = "Allow worker node communication"
+        from_port        = 30000
+        to_port          = 32767
+        protocol         = "tcp"
         cidr_blocks      = [var.cidr_blocks] # Replace with your VPC CIDR block
         ipv6_cidr_blocks = ["::/0"]
         self             = false
