@@ -59,12 +59,12 @@ resource "aws_security_group" "ap-project-01-sg" {
 
   ingress = concat(
     [
-      for port in [80, 8080, 22, 6443, 10250, 10251, 10252] : {
+      for port in [80, 8080, 8089, 22, 6443, 10250, 10251, 10252, 30007] : {
         description      = "Allow communication on port ${port}"
         from_port        = port
         to_port          = port
         protocol         = "tcp"
-        cidr_blocks      = [var.cidr_blocks] # Replace with your VPC CIDR block
+        cidr_blocks      = [var.cidr_blocks] 
         ipv6_cidr_blocks = ["::/0"]
         self             = false
         prefix_list_ids  = []
